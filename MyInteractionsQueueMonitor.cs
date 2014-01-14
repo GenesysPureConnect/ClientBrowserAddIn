@@ -41,10 +41,6 @@ namespace BrowserAddIn
                     _traceContext.Note("Navigating to: " + url);
                     browser.NavigateToUrl(url);
                 }
-                else
-                {
-                    browser.DisplayText(UrlNotSet);
-                }
             }    
         }
 
