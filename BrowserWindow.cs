@@ -8,7 +8,12 @@ namespace BrowserAddIn
 
         public BrowserWindow()
         {
-            _content = new BrowserControl();
+            /* NOTE!!!
+             * As of 4.0 2015 R3 P0, the constructor is NOT called on the UI thread! Do not create any UI elements here!
+             * UI elements must be lazy-instantiated within the getter for the Content property as that is retrieved
+             * on the UI thread.
+             */
+            //_content = new BrowserControl();
         }
 
         /// <summary>
@@ -21,7 +26,9 @@ namespace BrowserAddIn
         }
 
         /// <summary>
-        /// The unique identifier of the window’s category. If you are adding         /// multiple custom windows and want them to appear in the same category,         /// this value must match for each window. 
+        /// The unique identifier of the window’s category. If you are adding 
+        /// multiple custom windows and want them to appear in the same category, 
+        /// this value must match for each window. 
         /// </summary>
         protected override string CategoryId
         {
@@ -36,7 +43,7 @@ namespace BrowserAddIn
         {
             get 
             {
-                return _content;
+                return _content ?? (_content = new BrowserControl());
             }
         }
 
@@ -50,7 +57,10 @@ namespace BrowserAddIn
         }
 
         /// <summary>
-        /// The unique identifier of this window. This is used, for example, when the         /// Interaction Client persists the open “windows” (tabs) during shutdown and         /// re-creates each window on startup.         /// </summary>
+        /// The unique identifier of this window. This is used, for example, when the 
+        /// Interaction Client persists the open “windows” (tabs) during shutdown and 
+        /// re-creates each window on startup. 
+        /// </summary>
         protected override string Id
         {
             get { return "Browser Tab"; }
